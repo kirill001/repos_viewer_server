@@ -50,7 +50,7 @@ Artisan::command('repos:import', function(RepoService $repoService) {
     }
 
     echo 'Repository "' . $repo->author . '/' . $repo->name . '" has been imported successfully';
-})->describe('Imports the required repository');
+})->describe('Imports new repository and/or restore/add missing commits');
 
 Artisan::command('repos:commits', function() {
     $author = trim($this->ask('Please enter repository author'));
