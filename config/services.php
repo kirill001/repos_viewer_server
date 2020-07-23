@@ -30,4 +30,8 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'github' => [
+        'key' => 'MTdlM2FiYmZjZTllNzVhNjljN2Q6YTE5MDQ4MDZjNWMwODcxMjIwMmFiOGQ5YzdkMGEyNGMzNTE3OWM3ZQ=='
+    ]
+
 ];

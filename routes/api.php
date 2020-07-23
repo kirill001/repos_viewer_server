@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/repos/import/{author}/{name}', 'RepoController@importRepo');
+Route::post('/repos/add',                   'RepoController@addRepo');
 Route::get('/repos/get',                    'RepoController@allRepos');
-Route::get('/repos/{repo}',                 'RepoController@getRepo');
 Route::post('/repos/{repo}/remove',         'RepoController@removeRepo');
+Route::get('/repos/{repo}/commits',         'RepoController@getCommits');
 Route::post('/repos/{repo}/commits/remove', 'RepoController@removeCommits');

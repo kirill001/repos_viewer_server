@@ -45,11 +45,11 @@ Artisan::command('repos:import', function(RepoService $repoService) {
     try {
         $repo = $repoService->import($author, $name);
     } catch (Exception $e) {
-        echo 'Import failed' . $e->getMessage();
+        echo 'Import failed ' . $e->getMessage();
         exit;
     }
 
-    echo 'Repository "' . $repo->author . '/' . $repo->name . '" has been imported successfully';
+    echo 'Repository "' . $author . '/' . $name . '" has been imported successfully';
 })->describe('Imports new repository and/or restore/add missing commits');
 
 Artisan::command('repos:commits', function() {

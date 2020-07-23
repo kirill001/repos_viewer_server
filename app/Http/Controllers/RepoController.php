@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Commit;
+use App\Exceptions\NotFoundException;
 use App\Http\Services\RepoService;
 use App\Repo;
 
@@ -18,33 +19,45 @@ class RepoController extends Controller {
     /**
      * Adds repository to DB.
      *
-     * @param  string $author
-     * @param  string $name
      * @return string
      */
-    public function importRepo(string $author, string $name) : string
+    public function addRepo()
     {
+        $author = request()->input('author');
+        $name = request()->input('name');
+
         try {
-            $repo = $this->repoService->import($author, $name);
+            $this->repoService->import($author, $name);
+        } catch (NotFoundException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Repository was not found'
+            ]);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => 'Server error'
             ]);
         }
-
-        return response()->json($repo);
     }
 
     /**
-     * Returns repository
+     * Returns commits
      *
      * @param  Repo $repo
      * @return string
      */
-    public function getRepo(Repo $repo) : string
+    public function getCommits(Repo $repo)
     {
-        return response()->json($repo->load('commits'));
+        $page = request()->input('page', 1);
+
+        $offset = ($page - 1) * 20;
+
+        $total = $repo->commits()->count();
+
+        $commits = $repo->commits()->take(20)->offset($offset)->get();
+
+        return response()->json(['total' => $total, 'commits' => $commits]);
     }
 
     /**
@@ -52,9 +65,9 @@ class RepoController extends Controller {
      *
      * @return string
      */
-    public function allRepos() : string
+    public function allRepos()
     {
-        $repos = Repo::with('commits')->get();
+        $repos = Repo::orderBy('id', 'desc')->get();
 
         return response()->json($repos);
     }
